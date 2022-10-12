@@ -2,14 +2,112 @@
 <html lang=en>
 <head>
 <meta charset=utf-8>
-<title>Mige-Lookup</title>
+<title>Gombahatározó</title>
 <script>
+
+var jsons = [];
+
 fetch("Species/1.json")
   .then(response => response.json())
-  .then(json => console.log(json));
+  .then(json => jsons.push(json));
 </script>
 </head>
+
 <body>
-<p>I'm the content</p>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app">
+  <h1>{{ title }}</h1>
+  
+  <div>
+		<div>
+			<span>Név:</span>
+			<input type="text" v-model="nameFilter" @change="$emit('filter-changed')" />
+		</div>
+		<div>
+			<span>Kalap:</span>
+			<input type="text" v-model="capFilter" />
+		</div>
+		<div>
+			<span>Lemezek:</span>
+			<input type="text" v-model="gillsFilter" />
+		</div>
+		<div>
+			<span>Élőhely:</span>
+			<input type="text" v-model="presenceFilter" />
+		</div>
+  </div>
+
+  <h2>{{ resultCount }} találat:</h2>
+
+  <ul>
+	<li v-for="species in speciesListFiltered" :key="species.ID">
+	<a v-bind:href="species.Url" target="_blank">{{ species.NameHU }}</a>
+	</li>
+  </ul>
+
+</div>
+
+<script type="module">
+
+const speciesImport = import("./Species/speciesList.json", {
+  assert: {type: 'json'}
+});
+
+speciesImport.then( data => {
+	  console.log(data.default);
+	
+	  const { createApp } = Vue
+
+	  createApp({
+		data(speciesList) {
+		  return {
+			title: 'Gombahatározó',
+			speciesList: data.default,
+			nameFilter: '',
+			capFilter: '',
+			gillsFilter: '',
+			presenceFilter: ''
+		  }
+		},
+	    computed: {
+			speciesListFiltered() {
+				return this.filterSpeciesByName(
+					this.filterSpeciesByCap(
+						this.filterSpeciesByGills(
+							this.filterSpeciesByPresence(this.speciesList)
+						)
+					)
+				);
+			},
+			resultCount() {
+				return this.speciesListFiltered.length;
+			}
+		},
+		methods: {
+			filterSpeciesByName: function(species) {
+				return species.filter(x => this.nameFilter == '' || this.nameFilter !== '' && x.NameHU.includes(this.nameFilter));
+			},
+			filterSpeciesByCap: function(species) {
+				return species.filter(x => this.capFilter == '' || this.capFilter !== '' && x.CapText != '' && x.CapText.includes(this.capFilter));
+			},
+			filterSpeciesByGills: function(species) {
+				return species.filter(x => this.gillsFilter == '' || this.gillsFilter !== '' && x.GillsText != '' && x.GillsText.includes(this.gillsFilter));
+			},
+			filterSpeciesByPresence: function(species) {
+				return species.filter(x => this.presenceFilter == '' || this.presenceFilter !== '' && x.PresenceText != '' && x.PresenceText.includes(this.presenceFilter));
+			}
+		}
+	  }).mount('#app')
+});
+
+
+</script>
+
+
+
+
 </body>
+
 </html>

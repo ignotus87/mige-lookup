@@ -34,8 +34,24 @@ fetch("Species/1.json")
 			<input type="text" v-model="gillsFilter" />
 		</div>
 		<div>
+			<span>Tönk:</span>
+			<input type="text" v-model="stalkFilter" />
+		</div>
+		<div>
+			<span>Hús:</span>
+			<input type="text" v-model="fleshFilter" />
+		</div>
+		<div>
 			<span>Élőhely:</span>
 			<input type="text" v-model="presenceFilter" />
+		</div>
+		<div>
+			<span>Csak gallérral vagy gyűrűvel rendelkezők:</span>
+			<input type="checkbox" v-model="ringOnlyFilter" />
+		</div>
+		<div>
+			<span>Csak bocskorral rendelkezők:</span>
+			<input type="checkbox" v-model="sackOnlyFilter" />
 		</div>
   </div>
 
@@ -49,64 +65,7 @@ fetch("Species/1.json")
 
 </div>
 
-<script type="module">
-
-const speciesImport = import("./Species/speciesList.json", {
-  assert: {type: 'json'}
-});
-
-speciesImport.then( data => {
-	  console.log(data.default);
-	
-	  const { createApp } = Vue
-
-	  createApp({
-		data(speciesList) {
-		  return {
-			title: 'Gombahatározó',
-			speciesList: data.default,
-			nameFilter: '',
-			capFilter: '',
-			gillsFilter: '',
-			presenceFilter: ''
-		  }
-		},
-	    computed: {
-			speciesListFiltered() {
-				return this.filterSpeciesByName(
-					this.filterSpeciesByCap(
-						this.filterSpeciesByGills(
-							this.filterSpeciesByPresence(this.speciesList)
-						)
-					)
-				);
-			},
-			resultCount() {
-				return this.speciesListFiltered.length;
-			}
-		},
-		methods: {
-			filterSpeciesByName: function(species) {
-				return species.filter(x => this.nameFilter == '' || this.nameFilter !== '' && x.NameHU.includes(this.nameFilter));
-			},
-			filterSpeciesByCap: function(species) {
-				return species.filter(x => this.capFilter == '' || this.capFilter !== '' && x.CapText != '' && x.CapText.includes(this.capFilter));
-			},
-			filterSpeciesByGills: function(species) {
-				return species.filter(x => this.gillsFilter == '' || this.gillsFilter !== '' && x.GillsText != '' && x.GillsText.includes(this.gillsFilter));
-			},
-			filterSpeciesByPresence: function(species) {
-				return species.filter(x => this.presenceFilter == '' || this.presenceFilter !== '' && x.PresenceText != '' && x.PresenceText.includes(this.presenceFilter));
-			}
-		}
-	  }).mount('#app')
-});
-
-
-</script>
-
-
-
+<script type="module" src="./startup.js"></script>
 
 </body>
 

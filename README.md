@@ -2,7 +2,7 @@
 
 ## what's this?
 A simple mushroom identifier app. 
-You can search for some properties and you'll get the results containing the search terms.'
+You can search for some properties and you'll get the results containing the search terms.
 
 ## app url
 https://ignotus87.github.io/mige-lookup/

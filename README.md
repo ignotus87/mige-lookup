@@ -4,6 +4,8 @@
 A simple mushroom identifier app. 
 You can search for some properties and you'll get the results containing the search terms.
 
+The data is collected from the site of [Miskolci Gombász Egyesület](http://miskolcigombasz.hu/fajlista/index.php) using the [repo mige-collector](https://github.com/ignotus87/mige-collector).
+
 ## app url
 https://ignotus87.github.io/mige-lookup/
 

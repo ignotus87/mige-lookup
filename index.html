@@ -3,6 +3,8 @@
 <head>
 <meta charset=utf-8>
 <title>Gombahatározó</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
 
 var jsons = [];
@@ -11,59 +13,67 @@ fetch("Species/1.json")
   .then(response => response.json())
   .then(json => jsons.push(json));
 </script>
+
 </head>
 
-<body>
+<body id="app">
 
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-<div id="app">
-  <h1>{{ title }}</h1>
+  <header>
+	<h1>{{ title }}</h1>
+  </header>
   
-  <div>
-		<div>
-			<span>Név:</span>
-			<input type="text" v-model="nameFilter" @change="$emit('filter-changed')" />
-		</div>
-		<div>
-			<span>Kalap:</span>
-			<input type="text" v-model="capFilter" />
-		</div>
-		<div>
-			<span>Lemezek:</span>
-			<input type="text" v-model="gillsFilter" />
-		</div>
-		<div>
-			<span>Tönk:</span>
-			<input type="text" v-model="stalkFilter" />
-		</div>
-		<div>
-			<span>Hús:</span>
-			<input type="text" v-model="fleshFilter" />
-		</div>
-		<div>
-			<span>Élőhely:</span>
-			<input type="text" v-model="presenceFilter" />
-		</div>
-		<div>
-			<span>Csak gallérral vagy gyűrűvel rendelkezők:</span>
-			<input type="checkbox" v-model="ringOnlyFilter" />
-		</div>
-		<div>
-			<span>Csak bocskorral rendelkezők:</span>
-			<input type="checkbox" v-model="sackOnlyFilter" />
-		</div>
-  </div>
+  <nav>
+	<div>
+		<span>Név:</span>
+		<input type="text" v-model="nameFilter" @change="$emit('filter-changed')" />
+	</div>
+	<div>
+		<span>Kalap:</span>
+		<input type="text" v-model="capFilter" />
+	</div>
+	<div>
+		<span>Lemezek:</span>
+		<input type="text" v-model="gillsFilter" />
+	</div>
+	<div>
+		<span>Tönk:</span>
+		<input type="text" v-model="stalkFilter" />
+	</div>
+	<div>
+		<span>Hús:</span>
+		<input type="text" v-model="fleshFilter" />
+	</div>
+	<div>
+		<span>Élőhely:</span>
+		<input type="text" v-model="presenceFilter" />
+	</div>
+	<div>
+		<span>Csak gallérral vagy gyűrűvel rendelkezők:</span>
+		<input type="checkbox" v-model="ringOnlyFilter" />
+	</div>
+	<div>
+		<span>Csak bocskorral rendelkezők:</span>
+		<input type="checkbox" v-model="sackOnlyFilter" />
+	</div>
+  </nav>
+  
+  <section>
+  
+	<header>
+		<h2>{{ resultCount }} találat:</h2>
+	</header>
 
-  <h2>{{ resultCount }} találat:</h2>
+	  <article>
+		  <ul>
+			<li v-for="species in speciesListFiltered" :key="species.ID">
+			<a v-bind:href="species.Url" target="_blank">{{ species.NameHU }}</a>
+			</li>
+		  </ul>
+	  </article>
+  
+  </section>
 
-  <ul>
-	<li v-for="species in speciesListFiltered" :key="species.ID">
-	<a v-bind:href="species.Url" target="_blank">{{ species.NameHU }}</a>
-	</li>
-  </ul>
 
-</div>
 
 <script type="module" src="./startup.js"></script>
 

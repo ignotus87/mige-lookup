@@ -1,5 +1,8 @@
+"use strict";
+
 const speciesImport = import("./Species/speciesList.json", {
-    assert: { type: 'json' }
+    assert: { type: 'json' },
+    with: { type: 'json' }
 });
 
 speciesImport.then(data => {
